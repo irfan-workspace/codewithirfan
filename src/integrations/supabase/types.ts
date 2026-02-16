@@ -14,7 +14,240 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      experience: {
+        Row: {
+          company: string
+          description: string | null
+          end_date: string | null
+          id: string
+          is_published: boolean | null
+          order_index: number | null
+          role: string
+          start_date: string
+        }
+        Insert: {
+          company: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_published?: boolean | null
+          order_index?: number | null
+          role: string
+          start_date: string
+        }
+        Update: {
+          company?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_published?: boolean | null
+          order_index?: number | null
+          role?: string
+          start_date?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          category: string | null
+          challenges: Json | null
+          cover_image_url: string | null
+          created_at: string
+          features: Json | null
+          gallery_images: Json | null
+          github_url: string | null
+          id: string
+          impact_metrics: Json | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          live_url: string | null
+          problem: string | null
+          slug: string
+          solution: string | null
+          stack: Json | null
+          tagline: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          challenges?: Json | null
+          cover_image_url?: string | null
+          created_at?: string
+          features?: Json | null
+          gallery_images?: Json | null
+          github_url?: string | null
+          id?: string
+          impact_metrics?: Json | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          live_url?: string | null
+          problem?: string | null
+          slug: string
+          solution?: string | null
+          stack?: Json | null
+          tagline?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          challenges?: Json | null
+          cover_image_url?: string | null
+          created_at?: string
+          features?: Json | null
+          gallery_images?: Json | null
+          github_url?: string | null
+          id?: string
+          impact_metrics?: Json | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          live_url?: string | null
+          problem?: string | null
+          slug?: string
+          solution?: string | null
+          stack?: Json | null
+          tagline?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          availability_status: string | null
+          email: string | null
+          github: string | null
+          hero_text: string | null
+          id: string
+          linkedin: string | null
+          location: string | null
+          name: string
+          og_image_url: string | null
+          portfolio_seo_description: string | null
+          portfolio_seo_title: string | null
+          resume_url: string | null
+          summary: string | null
+          title: string
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          email?: string | null
+          github?: string | null
+          hero_text?: string | null
+          id?: string
+          linkedin?: string | null
+          location?: string | null
+          name?: string
+          og_image_url?: string | null
+          portfolio_seo_description?: string | null
+          portfolio_seo_title?: string | null
+          resume_url?: string | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          email?: string | null
+          github?: string | null
+          hero_text?: string | null
+          id?: string
+          linkedin?: string | null
+          location?: string | null
+          name?: string
+          og_image_url?: string | null
+          portfolio_seo_description?: string | null
+          portfolio_seo_title?: string | null
+          resume_url?: string | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          group_name: string
+          id: string
+          items: Json | null
+          order_index: number | null
+        }
+        Insert: {
+          group_name: string
+          id?: string
+          items?: Json | null
+          order_index?: number | null
+        }
+        Update: {
+          group_name?: string
+          id?: string
+          items?: Json | null
+          order_index?: number | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          id: string
+          is_published: boolean | null
+          message: string
+          name: string
+          order_index: number | null
+          source: string | null
+          title: string | null
+        }
+        Insert: {
+          id?: string
+          is_published?: boolean | null
+          message: string
+          name: string
+          order_index?: number | null
+          source?: string | null
+          title?: string | null
+        }
+        Update: {
+          id?: string
+          is_published?: boolean | null
+          message?: string
+          name?: string
+          order_index?: number | null
+          source?: string | null
+          title?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
