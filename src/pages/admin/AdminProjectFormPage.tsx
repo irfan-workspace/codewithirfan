@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Upload, X, Image as ImageIcon } from "lucide-react";
 
 const projectSchema = z.object({
   title: z.string().min(1, "Title required").max(200),
@@ -23,6 +24,9 @@ export default function AdminProjectFormPage() {
   const isEdit = !!id;
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [coverImageUrl, setCoverImageUrl] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     title: "", slug: "", tagline: "", category: "Web App", stack: "" as string,
     problem: "", solution: "", features: "", live_url: "", github_url: "",
@@ -32,20 +36,48 @@ export default function AdminProjectFormPage() {
   useEffect(() => {
     if (isEdit) {
       supabase.from("projects").select("*").eq("id", id).single().then(({ data }) => {
-        if (data) setForm({
-          title: data.title, slug: data.slug, tagline: data.tagline || "", category: data.category || "",
-          stack: (data.stack as string[])?.join(", ") || "",
-          problem: data.problem || "", solution: data.solution || "",
-          features: (data.features as string[])?.join("\n") || "",
-          live_url: data.live_url || "", github_url: data.github_url || "",
-          is_featured: data.is_featured, is_published: data.is_published,
-        });
+        if (data) {
+          setForm({
+            title: data.title, slug: data.slug, tagline: data.tagline || "", category: data.category || "",
+            stack: (data.stack as string[])?.join(", ") || "",
+            problem: data.problem || "", solution: data.solution || "",
+            features: (data.features as string[])?.join("\n") || "",
+            live_url: data.live_url || "", github_url: data.github_url || "",
+            is_featured: data.is_featured, is_published: data.is_published,
+          });
+          setCoverImageUrl(data.cover_image_url || "");
+        }
       });
     }
   }, [id, isEdit]);
 
   const handleTitleChange = (title: string) => {
     setForm(f => ({ ...f, title, slug: isEdit ? f.slug : slugify(title) }));
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { toast.error("Please select an image file"); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Image must be under 5MB"); return; }
+
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${slugify(form.title || "project")}.${ext}`;
+    const filePath = `covers/${fileName}`;
+
+    const { error } = await supabase.storage.from("project-images").upload(filePath, file, { upsert: true });
+    if (error) { toast.error("Upload failed: " + error.message); setUploading(false); return; }
+
+    const { data: urlData } = supabase.storage.from("project-images").getPublicUrl(filePath);
+    setCoverImageUrl(urlData.publicUrl);
+    toast.success("Cover image uploaded");
+    setUploading(false);
+  };
+
+  const removeCoverImage = () => {
+    setCoverImageUrl("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,6 +93,7 @@ export default function AdminProjectFormPage() {
       features: form.features.split("\n").map(s => s.trim()).filter(Boolean),
       live_url: form.live_url, github_url: form.github_url,
       is_featured: form.is_featured, is_published: form.is_published,
+      cover_image_url: coverImageUrl || "",
     };
 
     if (isEdit) {
@@ -94,6 +127,36 @@ export default function AdminProjectFormPage() {
           <input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} className="w-full px-3 py-2.5 rounded-lg bg-card border border-border text-sm outline-none focus:border-primary font-mono" />
         </div>
         {field("Tagline", "tagline")}
+        {/* Cover Image Upload */}
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Cover Image</label>
+          {coverImageUrl ? (
+            <div className="relative rounded-lg overflow-hidden border border-border">
+              <img src={coverImageUrl} alt="Cover preview" className="w-full h-48 object-cover" />
+              <button type="button" onClick={removeCoverImage} className="absolute top-2 right-2 p-1.5 rounded-full bg-destructive text-destructive-foreground hover:opacity-90">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="w-full h-48 rounded-lg border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {uploading ? (
+                <span className="text-sm">Uploading...</span>
+              ) : (
+                <>
+                  <Upload className="w-8 h-8" />
+                  <span className="text-sm">Click to upload cover image</span>
+                  <span className="text-xs text-muted-foreground">PNG, JPG up to 5MB</span>
+                </>
+              )}
+            </button>
+          )}
+          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleCoverUpload} className="hidden" />
+        </div>
         <div>
           <label className="text-sm font-medium mb-1.5 block">Category</label>
           <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2.5 rounded-lg bg-card border border-border text-sm outline-none">
