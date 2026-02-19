@@ -53,7 +53,9 @@ export default function ProjectDetailPage() {
             <ArrowLeft size={16} /> Back to Projects
           </Link>
 
-          <span className="text-sm font-mono text-primary">{project.category}</span>
+          <div>
+            <span className="text-sm font-mono text-primary">{project.category}</span>
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold mt-2 mb-3">{project.title}</h1>
           {project.tagline && <p className="text-xl text-muted-foreground mb-8">{project.tagline}</p>}
 
