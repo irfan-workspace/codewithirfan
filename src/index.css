@@ -90,3 +90,28 @@
     @apply py-20 md:py-28 px-4 md:px-8;
   }
 }
+
+/* Hero animated orbs */
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(60px, -40px) scale(1.08); }
+  66%       { transform: translate(-40px, 30px) scale(0.95); }
+}
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-50px, 50px) scale(1.05); }
+  66%       { transform: translate(70px, -30px) scale(0.92); }
+}
+@keyframes orb-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(30px, 60px) scale(1.1); }
+}
+@keyframes grid-fade {
+  0%, 100% { opacity: 0.03; }
+  50%       { opacity: 0.065; }
+}
+.hero-orb-1 { animation: orb-float-1 18s ease-in-out infinite; }
+.hero-orb-2 { animation: orb-float-2 22s ease-in-out infinite; }
+.hero-orb-3 { animation: orb-float-3 15s ease-in-out infinite; }
+.hero-grid  { animation: grid-fade 8s ease-in-out infinite; }
+

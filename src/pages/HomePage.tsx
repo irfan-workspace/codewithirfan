@@ -19,34 +19,80 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="min-h-[90vh] flex items-center section-padding">
-        <div className="container mx-auto">
+      <section className="relative min-h-[90vh] flex items-center section-padding overflow-hidden">
+        {/* Animated orb background */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          {/* Orb 1 — large green, top-right */}
+          <div className="hero-orb-1 absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-primary/20 blur-[120px]" />
+          {/* Orb 2 — medium teal, bottom-left */}
+          <div className="hero-orb-2 absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-emerald-400/15 blur-[100px]" />
+          {/* Orb 3 — small accent, center-right */}
+          <div className="hero-orb-3 absolute top-1/2 right-1/4 w-[280px] h-[280px] rounded-full bg-primary/10 blur-[80px]" />
+          {/* Subtle dot grid */}
+          <div
+            className="hero-grid absolute inset-0"
+            style={{
+              backgroundImage: "radial-gradient(circle, hsl(160 84% 39% / 0.5) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
+            >
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden="true" />
               {settings?.availability_status || "Open to work"}
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-              Hi, I'm <span className="text-gradient">{settings?.name || "Mohd Irfan"}</span>
+            </motion.div>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
+              Hi, I'm{" "}
+              <span className="text-gradient">{settings?.name || "Mohd Irfan"}</span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-light">
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="text-xl md:text-2xl text-muted-foreground mb-4 font-light"
+            >
               {settings?.title || "Full-Stack Developer"}
-            </p>
+            </motion.p>
             {settings?.summary && (
-              <p className="text-lg text-muted-foreground/80 mb-8 max-w-2xl leading-relaxed">
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, duration: 0.6 }}
+                className="text-lg text-muted-foreground/80 mb-10 max-w-2xl leading-relaxed"
+              >
                 {settings.summary}
-              </p>
+              </motion.p>
             )}
-            <div className="flex flex-wrap gap-4">
-              <Link to="/projects" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              className="flex flex-wrap gap-4"
+            >
+              <Link
+                to="/projects"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity shadow-lg shadow-primary/25"
+              >
                 View Projects <ArrowRight size={16} aria-hidden="true" />
               </Link>
-              <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-secondary transition-colors">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-border text-foreground font-medium hover:bg-secondary transition-colors"
+              >
                 Get in Touch
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="flex justify-center mt-16">
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} className="flex justify-center mt-16">
             <ChevronDown size={24} className="text-muted-foreground animate-bounce" aria-hidden="true" />
           </motion.div>
         </div>
