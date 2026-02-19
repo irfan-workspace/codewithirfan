@@ -23,7 +23,7 @@ export default function HomePage() {
         <div className="container mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden="true" />
               {settings?.availability_status || "Open to work"}
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
@@ -32,12 +32,14 @@ export default function HomePage() {
             <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-light">
               {settings?.title || "Full-Stack Developer"}
             </p>
-            <p className="text-lg text-muted-foreground/80 mb-8 max-w-2xl leading-relaxed">
-              {settings?.summary || "Building modern web applications."}
-            </p>
+            {settings?.summary && (
+              <p className="text-lg text-muted-foreground/80 mb-8 max-w-2xl leading-relaxed">
+                {settings.summary}
+              </p>
+            )}
             <div className="flex flex-wrap gap-4">
               <Link to="/projects" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">
-                View Projects <ArrowRight size={16} />
+                View Projects <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-secondary transition-colors">
                 Get in Touch
@@ -45,7 +47,7 @@ export default function HomePage() {
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="flex justify-center mt-16">
-            <ChevronDown size={24} className="text-muted-foreground animate-bounce" />
+            <ChevronDown size={24} className="text-muted-foreground animate-bounce" aria-hidden="true" />
           </motion.div>
         </div>
       </section>
@@ -59,11 +61,22 @@ export default function HomePage() {
                 <p className="text-sm font-mono text-primary mb-2">Featured Work</p>
                 <h2 className="text-3xl md:text-4xl font-bold">Selected Projects</h2>
               </div>
-              <Link to="/projects" className="text-sm text-primary hover:underline flex items-center gap-1">View all <ArrowRight size={14} /></Link>
+              <Link to="/projects" className="text-sm text-primary hover:underline flex items-center gap-1 shrink-0">
+                View all <ArrowRight size={14} aria-hidden="true" />
+              </Link>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map(p => (
-                <ProjectCard key={p.id} slug={p.slug} title={p.title} tagline={p.tagline} category={p.category} stack={p.stack || []} is_featured={p.is_featured} cover_image_url={p.cover_image_url} />
+                <ProjectCard
+                  key={p.id}
+                  slug={p.slug}
+                  title={p.title}
+                  tagline={p.tagline || ""}
+                  category={p.category || ""}
+                  stack={Array.isArray(p.stack) ? p.stack : []}
+                  is_featured={p.is_featured || false}
+                  cover_image_url={p.cover_image_url}
+                />
               ))}
             </div>
           </div>
@@ -81,7 +94,7 @@ export default function HomePage() {
                 <motion.div key={sg.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass rounded-xl p-6">
                   <h3 className="text-sm font-semibold text-primary mb-4">{sg.group_name}</h3>
                   <div className="flex flex-wrap gap-2">
-                    {(sg.items as string[]).map((s: string) => (
+                    {(Array.isArray(sg.items) ? sg.items : []).map((s: string) => (
                       <span key={s} className="text-xs px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground">{s}</span>
                     ))}
                   </div>
@@ -99,7 +112,7 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Let's work together</h2>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">Have a project in mind? I'd love to hear about it.</p>
             <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">
-              Get in Touch <ArrowRight size={16} />
+              Get in Touch <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </motion.div>
         </div>
