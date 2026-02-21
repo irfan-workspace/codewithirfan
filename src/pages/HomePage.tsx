@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
@@ -9,6 +9,30 @@ export default function HomePage() {
   const [settings, setSettings] = useState<any>(null);
   const [projects, setProjects] = useState<any[]>([]);
   const [skills, setSkills] = useState<any[]>([]);
+
+  const roles = ["Full-Stack Developer", "React Developer", "Node.js Engineer", "UI/UX Enthusiast", "Problem Solver"];
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const currentRole = roles[roleIndex];
+
+  useEffect(() => {
+    const speed = isDeleting ? 40 : 80;
+    const pause = !isDeleting && charIndex === currentRole.length ? 1800 : isDeleting && charIndex === 0 ? 400 : speed;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting && charIndex === currentRole.length) {
+        setIsDeleting(true);
+      } else if (isDeleting && charIndex === 0) {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % roles.length);
+      } else {
+        setCharIndex((prev) => prev + (isDeleting ? -1 : 1));
+      }
+    }, pause);
+
+    return () => clearTimeout(timer);
+  }, [charIndex, isDeleting, currentRole, roles.length]);
 
   useEffect(() => {
     supabase.from("settings").select("*").limit(1).single().then(({ data }) => setSettings(data));
@@ -57,9 +81,10 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-xl md:text-2xl text-muted-foreground mb-4 font-light"
+              className="text-xl md:text-2xl text-muted-foreground mb-4 font-light h-9"
             >
-              {settings?.title || "Full-Stack Developer"}
+              <span>{currentRole.slice(0, charIndex)}</span>
+              <span className="inline-block w-[2px] h-6 bg-primary ml-0.5 align-middle animate-pulse" />
             </motion.p>
             {settings?.summary && (
               <motion.p
