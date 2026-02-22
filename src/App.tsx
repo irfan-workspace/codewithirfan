@@ -13,6 +13,7 @@ import ProjectDetailPage from "@/pages/ProjectDetailPage";
 import AboutPage from "@/pages/AboutPage";
 import ResumePage from "@/pages/ResumePage";
 import ContactPage from "@/pages/ContactPage";
+import CertificatesPage from "@/pages/CertificatesPage";
 import AdminLoginPage from "@/pages/admin/AdminLoginPage";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminProjectsPage from "@/pages/admin/AdminProjectsPage";
@@ -22,6 +23,7 @@ import AdminSkillsPage from "@/pages/admin/AdminSkillsPage";
 import AdminTestimonialsPage from "@/pages/admin/AdminTestimonialsPage";
 import AdminSettingsPage from "@/pages/admin/AdminSettingsPage";
 import AdminMessagesPage from "@/pages/admin/AdminMessagesPage";
+import AdminCertificatesPage from "@/pages/admin/AdminCertificatesPage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +44,7 @@ const App = () => (
               <Route path="/about" element={<AboutPage />} />
               <Route path="/resume" element={<ResumePage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/certificates" element={<CertificatesPage />} />
             </Route>
 
             {/* Admin */}
@@ -56,6 +59,7 @@ const App = () => (
               <Route path="testimonials" element={<AdminTestimonialsPage />} />
               <Route path="settings" element={<AdminSettingsPage />} />
               <Route path="messages" element={<AdminMessagesPage />} />
+              <Route path="certificates" element={<AdminCertificatesPage />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
