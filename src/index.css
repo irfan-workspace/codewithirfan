@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -37,32 +37,32 @@
   }
 
   .dark {
-    --background: 222 28% 6%;
-    --foreground: 210 20% 92%;
-    --card: 222 24% 9%;
-    --card-foreground: 210 20% 92%;
-    --popover: 222 24% 9%;
-    --popover-foreground: 210 20% 92%;
+    --background: 225 25% 4%;
+    --foreground: 210 20% 94%;
+    --card: 225 22% 7%;
+    --card-foreground: 210 20% 94%;
+    --popover: 225 22% 7%;
+    --popover-foreground: 210 20% 94%;
     --primary: 160 84% 39%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 222 20% 14%;
-    --secondary-foreground: 210 20% 92%;
-    --muted: 222 20% 14%;
-    --muted-foreground: 215 15% 55%;
+    --secondary: 225 18% 12%;
+    --secondary-foreground: 210 20% 94%;
+    --muted: 225 18% 12%;
+    --muted-foreground: 215 15% 50%;
     --accent: 160 84% 39%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 222 18% 16%;
-    --input: 222 18% 16%;
+    --border: 225 16% 13%;
+    --input: 225 16% 13%;
     --ring: 160 84% 39%;
-    --sidebar-background: 222 28% 6%;
-    --sidebar-foreground: 210 20% 92%;
+    --sidebar-background: 225 25% 4%;
+    --sidebar-foreground: 210 20% 94%;
     --sidebar-primary: 160 84% 39%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 20% 14%;
-    --sidebar-accent-foreground: 210 20% 92%;
-    --sidebar-border: 222 18% 16%;
+    --sidebar-accent: 225 18% 12%;
+    --sidebar-accent-foreground: 210 20% 94%;
+    --sidebar-border: 225 16% 13%;
     --sidebar-ring: 160 84% 39%;
   }
 }
@@ -72,22 +72,59 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-emerald-400;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(160 84% 45%), hsl(160 70% 60%), hsl(180 60% 50%));
+  }
+  .text-gradient-subtle {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(210 20% 94%), hsl(210 15% 70%));
   }
   .glass {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50;
+    @apply bg-card/50 backdrop-blur-xl border border-border/40;
+  }
+  .glass-strong {
+    @apply bg-card/80 backdrop-blur-2xl border border-border/50;
   }
   .glow {
-    box-shadow: 0 0 30px -5px hsl(160 84% 39% / 0.2);
+    box-shadow: 0 0 40px -8px hsl(160 84% 39% / 0.2), 0 0 80px -16px hsl(160 84% 39% / 0.1);
+  }
+  .glow-sm {
+    box-shadow: 0 0 20px -5px hsl(160 84% 39% / 0.15);
   }
   .section-padding {
-    @apply py-20 md:py-28 px-4 md:px-8;
+    @apply py-24 md:py-32 px-4 md:px-8;
+  }
+  .section-padding-sm {
+    @apply py-16 md:py-20 px-4 md:px-8;
+  }
+  .noise {
+    position: relative;
+  }
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+  }
+  .border-glow {
+    border-image: linear-gradient(135deg, hsl(160 84% 39% / 0.3), transparent 60%) 1;
   }
 }
 
@@ -107,11 +144,73 @@
   50%       { transform: translate(30px, 60px) scale(1.1); }
 }
 @keyframes grid-fade {
-  0%, 100% { opacity: 0.03; }
-  50%       { opacity: 0.065; }
+  0%, 100% { opacity: 0.02; }
+  50%       { opacity: 0.05; }
 }
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes line-draw {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
 .hero-orb-1 { animation: orb-float-1 18s ease-in-out infinite; }
 .hero-orb-2 { animation: orb-float-2 22s ease-in-out infinite; }
 .hero-orb-3 { animation: orb-float-3 15s ease-in-out infinite; }
 .hero-grid  { animation: grid-fade 8s ease-in-out infinite; }
 
+/* Metric counter animation */
+.metric-card {
+  position: relative;
+  overflow: hidden;
+}
+.metric-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, hsl(160 84% 39% / 0.05), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Gradient border cards */
+.gradient-border {
+  position: relative;
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, hsl(160 84% 39% / 0.3), transparent 50%, hsl(160 84% 39% / 0.1));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Section divider line */
+.section-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(160 84% 39% / 0.3), transparent);
+}
+
+/* Skill tag hover */
+.skill-tag {
+  @apply text-xs px-3 py-1.5 rounded-md bg-secondary/80 text-secondary-foreground transition-all duration-200;
+}
+.skill-tag:hover {
+  @apply bg-primary/15 text-primary;
+  box-shadow: 0 0 12px -3px hsl(160 84% 39% / 0.2);
+}
