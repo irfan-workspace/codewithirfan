@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      certificates: {
+        Row: {
+          created_at: string
+          credential_id: string | null
+          id: string
+          image_url: string | null
+          is_published: boolean | null
+          issue_date: string
+          issuer: string
+          order_index: number | null
+          skills: Json | null
+          title: string
+          verify_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          credential_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          issue_date: string
+          issuer: string
+          order_index?: number | null
+          skills?: Json | null
+          title: string
+          verify_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          credential_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          issue_date?: string
+          issuer?: string
+          order_index?: number | null
+          skills?: Json | null
+          title?: string
+          verify_url?: string | null
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string

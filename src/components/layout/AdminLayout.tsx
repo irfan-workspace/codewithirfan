@@ -1,12 +1,13 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, FolderOpen, Briefcase, Wrench, MessageSquare, Settings, LogOut, Star } from "lucide-react";
+import { LayoutDashboard, FolderOpen, Briefcase, Wrench, MessageSquare, Settings, LogOut, Star, Award } from "lucide-react";
 
 const navItems = [
   { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { to: "/admin/projects", icon: FolderOpen, label: "Projects" },
   { to: "/admin/experience", icon: Briefcase, label: "Experience" },
   { to: "/admin/skills", icon: Wrench, label: "Skills" },
+  { to: "/admin/certificates", icon: Award, label: "Certificates" },
   { to: "/admin/testimonials", icon: Star, label: "Testimonials" },
   { to: "/admin/messages", icon: MessageSquare, label: "Messages" },
   { to: "/admin/settings", icon: Settings, label: "Settings" },
