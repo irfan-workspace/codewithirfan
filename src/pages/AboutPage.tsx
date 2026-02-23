@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 
-function formatDate(dateStr: string) {
-  if (!dateStr) return "";
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+function fmtDate(d: string) {
+  if (!d) return "";
+  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
 export default function AboutPage() {
@@ -23,43 +22,38 @@ export default function AboutPage() {
 
   return (
     <section className="section-padding">
-      <div className="container mx-auto max-w-4xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-sm font-mono text-primary mb-2">About Me</p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">{settings?.name || "Mohd Irfan"}</h1>
-          {settings?.title && (
-            <p className="text-lg text-primary font-medium mb-3">{settings.title}</p>
-          )}
-          {settings?.summary && (
-            <p className="text-lg text-muted-foreground leading-relaxed mb-16 max-w-2xl">{settings.summary}</p>
-          )}
+      <div className="container mx-auto px-6 md:px-8 max-w-3xl">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">{settings?.name || "About"}</h1>
+          {settings?.title && <p className="text-primary text-base font-medium mb-4">{settings.title}</p>}
+          {settings?.summary && <p className="text-muted-foreground leading-relaxed mb-16 max-w-xl">{settings.summary}</p>}
         </motion.div>
 
         {/* Experience */}
         {experience.length > 0 && (
           <div className="mb-16">
-            <h2 className="text-2xl font-semibold mb-8">Experience</h2>
-            <div className="space-y-4">
-              {experience.map(exp => (
+            <h2 className="text-lg font-semibold mb-6">Experience</h2>
+            <div className="space-y-0 border-l border-border ml-2">
+              {experience.map((exp) => (
                 <motion.div
                   key={exp.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  className="glass rounded-xl p-6"
+                  transition={{ duration: 0.3 }}
+                  className="pl-6 pb-8 relative"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-2">
+                  <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-border -translate-x-[5px]" />
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
                     <div>
-                      <h3 className="font-semibold">{exp.role}</h3>
-                      <p className="text-primary text-sm mt-0.5">{exp.company}</p>
+                      <h3 className="font-medium text-sm">{exp.role}</h3>
+                      <p className="text-primary text-xs">{exp.company}</p>
                     </div>
-                    <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
-                      {formatDate(exp.start_date)} — {exp.end_date ? formatDate(exp.end_date) : "Present"}
+                    <span className="text-xs text-muted-foreground font-mono shrink-0">
+                      {fmtDate(exp.start_date)} — {exp.end_date ? fmtDate(exp.end_date) : "Present"}
                     </span>
                   </div>
-                  {exp.description && (
-                    <p className="text-sm text-muted-foreground leading-relaxed mt-3">{exp.description}</p>
-                  )}
+                  {exp.description && <p className="text-sm text-muted-foreground leading-relaxed mt-2">{exp.description}</p>}
                 </motion.div>
               ))}
             </div>
@@ -69,14 +63,14 @@ export default function AboutPage() {
         {/* Skills */}
         {skills.length > 0 && (
           <div className="mb-16">
-            <h2 className="text-2xl font-semibold mb-8">Skills</h2>
-            <div className="grid md:grid-cols-2 gap-6">
+            <h2 className="text-lg font-semibold mb-6">Skills</h2>
+            <div className="grid sm:grid-cols-2 gap-6">
               {skills.map(sg => (
-                <div key={sg.id} className="glass rounded-xl p-6">
-                  <h3 className="text-sm font-semibold text-primary mb-3">{sg.group_name}</h3>
-                  <div className="flex flex-wrap gap-2">
+                <div key={sg.id}>
+                  <h3 className="text-sm font-medium mb-3">{sg.group_name}</h3>
+                  <div className="flex flex-wrap gap-1.5">
                     {(Array.isArray(sg.items) ? sg.items : []).map((s: string) => (
-                      <span key={s} className="text-xs px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground">{s}</span>
+                      <span key={s} className="text-xs px-2.5 py-1 rounded bg-secondary text-muted-foreground">{s}</span>
                     ))}
                   </div>
                 </div>
@@ -88,24 +82,22 @@ export default function AboutPage() {
         {/* Testimonials */}
         {testimonials.length > 0 && (
           <div>
-            <h2 className="text-2xl font-semibold mb-8">Testimonials</h2>
-            <div className="grid md:grid-cols-2 gap-6">
+            <h2 className="text-lg font-semibold mb-6">What people say</h2>
+            <div className="space-y-4">
               {testimonials.map(t => (
-                <motion.div
+                <motion.blockquote
                   key={t.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  className="glass rounded-xl p-6 flex flex-col justify-between gap-4"
+                  className="border-l-2 border-border pl-5 py-2"
                 >
-                  <p className="text-muted-foreground text-sm leading-relaxed italic">"{t.message}"</p>
-                  <div>
-                    <p className="font-medium text-sm">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {[t.title, t.source].filter(Boolean).join(" · ")}
-                    </p>
-                  </div>
-                </motion.div>
+                  <p className="text-sm text-muted-foreground leading-relaxed italic mb-2">"{t.message}"</p>
+                  <footer className="text-xs">
+                    <span className="font-medium text-foreground">{t.name}</span>
+                    {t.title && <span className="text-muted-foreground"> · {t.title}</span>}
+                  </footer>
+                </motion.blockquote>
               ))}
             </div>
           </div>

@@ -20,7 +20,6 @@ export default function ProjectsPage() {
       });
   }, []);
 
-  // Filter out null/empty categories
   const categories = [
     "All",
     ...Array.from(new Set(projects.map(p => p.category).filter(Boolean))),
@@ -29,14 +28,12 @@ export default function ProjectsPage() {
 
   return (
     <section className="section-padding">
-      <div className="container mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-sm font-mono text-primary mb-2">Portfolio</p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">All Projects</h1>
-          <p className="text-muted-foreground mb-8 max-w-2xl">A collection of projects I've worked on.</p>
+      <div className="container mx-auto px-6 md:px-8">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">Projects</h1>
+          <p className="text-muted-foreground mb-10 max-w-lg">Things I've built — from side projects to production platforms.</p>
         </motion.div>
 
-        {/* Category filter */}
         {categories.length > 1 && (
           <div className="flex flex-wrap gap-2 mb-10" role="group" aria-label="Filter by category">
             {categories.map(c => (
@@ -44,10 +41,10 @@ export default function ProjectsPage() {
                 key={c}
                 onClick={() => setFilter(c)}
                 aria-pressed={filter === c}
-                className={`text-sm px-4 py-1.5 rounded-full font-medium transition-colors ${
+                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-colors ${
                   filter === c
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                    ? "bg-foreground text-background"
+                    : "bg-secondary text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {c}
@@ -58,7 +55,7 @@ export default function ProjectsPage() {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <p className="text-muted-foreground text-center py-20">No projects found.</p>
